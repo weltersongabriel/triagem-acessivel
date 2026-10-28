@@ -1,0 +1,25 @@
+/* Ajuda: sempre visível, discreta até ser necessária */
+footer {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg); border-top: 2px solid var(--line);
+}
+.help {
+  display: block; width: 100%; max-width: 720px; margin: 0 auto; min-height: 60px;
+  font: inherit; font-weight: 800; color: #fff; background: var(--bad);
+  border: 0; border-radius: var(--r); box-shadow: 0 5px 0 #7d1419; cursor: pointer;
+}
+.help:active { transform: translateY(4px); box-shadow: 0 1px 0 #7d1419; }
+:root[data-mode="hc"] .help { box-shadow: 0 0 0 3px #ffe600; }
+
+.ov {
+  position: fixed; inset: 0; z-index: 9; padding: 24px; gap: 20px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  background: var(--bad); color: #fff;
+}
+.ov h1 { font-size: 2.4em; margin: 0; }
+.ov .sm { background: #fff; color: #000; font-size: 1em; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

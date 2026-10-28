@@ -1,0 +1,6 @@
+/* Escala de dor */
+.lvl { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 12px; }
+.lvl .opt { flex-direction: column; gap: 4px; justify-content: center; text-align: center; padding: 12px 6px; border-bottom-width: 10px; }
+.lvl .opt::after { content: none; }
+.lvl .opt b { font-size: 1.3em; }
+.leg { display: flex; justify-content: space-between; font-size: .85em; margin: 12px 2px; }

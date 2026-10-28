@@ -1,0 +1,7 @@
+/* Resumo */
+.card { background: var(--card); border: 2px solid var(--line); border-radius: var(--r); padding: 6px 18px; margin-bottom: 16px; }
+.card div { padding: 12px 0; border-bottom: 2px solid var(--line); }
+.card div:last-child { border: 0; }
+.card span { display: block; font-size: .75em; opacity: .75; }
+.card strong { font-size: 1.15em; font-weight: 800; }
+.alert { border-color: var(--bad); border-width: 5px; }

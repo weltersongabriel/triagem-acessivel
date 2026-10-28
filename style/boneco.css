@@ -1,0 +1,23 @@
+/* Boneco */
+.seg { display: flex; gap: 8px; margin-bottom: 12px; }
+.seg .sm { flex: 1; border-radius: var(--r); }
+
+.fig {
+  background: var(--card); border: 2px solid var(--line); border-radius: calc(var(--r) + 6px);
+  padding: 14px 0 6px; margin-bottom: 12px;
+}
+svg#body { display: block; margin: 0 auto; width: min(300px, 78%); height: auto; touch-action: manipulation; }
+
+.reg {
+  fill: var(--skin); stroke: var(--ink); stroke-width: 2.5;
+  cursor: pointer; transition: fill .12s;
+}
+.reg:hover { fill: color-mix(in srgb, var(--pain) 28%, var(--skin)); }
+.reg.on { fill: var(--pain); animation: pop .22s ease-out; transform-box: fill-box; transform-origin: center; }
+@keyframes pop { 50% { transform: scale(1.07); } }
+.reg:focus-visible { stroke-width: 6; outline: none; }
+.deco { fill: var(--ink); stroke: var(--ink); stroke-width: 2.5; pointer-events: none; }
+.deco[d^="M76"] { stroke: none; }
+
+.chips { min-height: 2.2em; margin: 0 0 14px; font-weight: 800; color: var(--acc); }
+:root[data-mode="hc"] .chips { color: #fff; }

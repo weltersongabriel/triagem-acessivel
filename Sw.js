@@ -1,8 +1,10 @@
 // Aumente o número da versão SEMPRE que alterar qualquer arquivo do app.
-const CACHE = 'triagem-v2';
+const CACHE = 'triagem-v4';
 
-// Arquivos essenciais (precisam existir, senão a instalação falha).
-const CORE = ['./', 'index.html', 'manifest.json', 'style/imports.css', 'script.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
+
+const CORE = ['./', 'index.html', 'manifest.json', 'script.js',
+  'style/style.css', 'style/resumo.css', 'style/imports.css', 'style/escala-dor.css', 'style/botoes.css', 'style/boneco.css', 'style/ajuda.css',
+  'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
 
 // Áudios e vídeos de Libras: liste aqui os que existirem. Exemplos:
 // 'audio/voce-esta-bem.mp3', 'libras/voce-esta-bem.mp4'
@@ -11,7 +13,8 @@ const MEDIA = [];
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const c = await caches.open(CACHE);
-    await c.addAll(CORE);
+    // await c.addAll(CORE);
+    await c.addAll(CORE.map(url => new Request(url, { cache: 'reload' })));
     await Promise.all(MEDIA.map(u => c.add(u).catch(() => {})));
     await self.skipWaiting();
   })());

@@ -1,8 +1,8 @@
 // Aumente o número da versão SEMPRE que alterar qualquer arquivo do app.
-const CACHE = 'triagem-v1';
+const CACHE = 'triagem-v2';
 
 // Arquivos essenciais (precisam existir, senão a instalação falha).
-const CORE = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
+const CORE = ['./', 'index.html', 'manifest.json', 'style/imports.css', 'script.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
 
 // Áudios e vídeos de Libras: liste aqui os que existirem. Exemplos:
 // 'audio/voce-esta-bem.mp3', 'libras/voce-esta-bem.mp4'

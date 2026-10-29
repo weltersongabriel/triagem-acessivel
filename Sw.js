@@ -1,5 +1,5 @@
 // Aumente o número da versão SEMPRE que alterar qualquer arquivo do app.
-const CACHE = 'triagem-v4';
+const CACHE = 'triagem-v5';
 
 
 const CORE = ['./', 'index.html', 'manifest.json', 'script.js',

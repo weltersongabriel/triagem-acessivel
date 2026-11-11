@@ -1,23 +1,20 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <title>Triagem Acessível – Protótipo</title>
-  <link rel="stylesheet" href="style/imports.css">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000000">
-
-</head>
-<body>
-  <div id="app"></div>
-  <script src="script.js"></script>
-
-  <script>
-if('serviceWorker' in navigator){addEventListener('load',
-()=>navigator.serviceWorker.register('Sw.js').catch(()=>{}))}</script>
-
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f8f6" />
+    <meta
+      name="description"
+      content="Uma forma acessível de organizar e mostrar suas respostas de saúde a um profissional."
+    />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <title>Triagem Acessível — seu cuidado, no seu tempo</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
+  </body>
 </html>

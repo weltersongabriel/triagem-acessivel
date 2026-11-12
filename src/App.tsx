@@ -1,5 +1,5 @@
-import { useEffect, useReducer, useRef } from "react";
-import type { Dispatch, KeyboardEvent as ReactKeyboardEvent } from "react";
+import { lazy, Suspense, useEffect, useReducer, useRef } from "react";
+import type { Dispatch } from "react";
 import {
   PAIN_FACES,
   WARNING_SIGNS,
@@ -10,7 +10,9 @@ import {
   triageReducer,
 } from "./domain";
 import type { Step, TriageAction, TriageState } from "./domain";
+import { BACK_LABELS, BODY_REGIONS } from "./bodyRegions";
 
+const ThreeBodyCanvas = lazy(() => import("./ThreeBodyCanvas"));
 type ChoiceProps = {
   icon: string;
   label: string;
@@ -41,86 +43,6 @@ function BrandMark() {
   );
 }
 
-type Region = { label: string; front: string; back: string };
-
-const BODY_REGIONS: Region[] = [
-  {
-    label: "Cabeça",
-    front: "M110 15c-16 0-27 13-27 31 0 17 10 29 27 29s27-12 27-29c0-18-11-31-27-31Z",
-    back: "M110 15c-16 0-27 13-27 31 0 17 10 29 27 29s27-12 27-29c0-18-11-31-27-31Z",
-  },
-  {
-    label: "Pescoço",
-    front: "M96 72h28l4 34c-9 10-27 10-36 0l4-34Z",
-    back: "M96 72h28l4 34c-9 10-27 10-36 0l4-34Z",
-  },
-  {
-    label: "Peito",
-    front: "M72 99c10-11 24-16 38-16s28 5 38 16l12 69-17 37H77l-17-37 12-69Z",
-    back: "M72 99c10-11 24-16 38-16s28 5 38 16l12 69-17 37H77l-17-37 12-69Z",
-  },
-  {
-    label: "Barriga",
-    front: "M77 190c9 7 21 11 33 11s24-4 33-11l-2 57c-10 10-20 15-31 15s-21-5-31-15l-2-57Z",
-    back: "M79 190h62l-2 54c-10 10-20 15-29 15s-19-5-29-15l-2-54Z",
-  },
-  {
-    label: "Braço direito",
-    front: "M72 101c-8-4-16-2-21 7l-21 91c-4 13 14 19 19 5l27-64-4-39Z",
-    back: "M72 101c-8-4-16-2-21 7l-21 91c-4 13 14 19 19 5l27-64-4-39Z",
-  },
-  {
-    label: "Braço esquerdo",
-    front: "M148 101c8-4 16-2 21 7l21 91c4 13-14 19-19 5l-27-64 4-39Z",
-    back: "M148 101c8-4 16-2 21 7l21 91c4 13-14 19-19 5l-27-64 4-39Z",
-  },
-  {
-    label: "Mão direita",
-    front: "M36 197c-9 0-14 8-13 18 1 11 7 20 15 20s13-9 13-20c0-10-6-18-15-18Z",
-    back: "M36 197c-9 0-14 8-13 18 1 11 7 20 15 20s13-9 13-20c0-10-6-18-15-18Z",
-  },
-  {
-    label: "Mão esquerda",
-    front: "M184 197c9 0 14 8 13 18-1 11-7 20-15 20s-13-9-13-20c0-10 6-18 15-18Z",
-    back: "M184 197c9 0 14 8 13 18-1 11-7 20-15 20s-13-9-13-20c0-10 6-18 15-18Z",
-  },
-  {
-    label: "Perna direita",
-    front: "M79 251c9 9 20 14 31 14v87c0 25-8 50-16 69-5 12-24 8-22-5l7-39c4-21 1-41-4-61l-7-31 11-34Z",
-    back: "M79 251c9 9 20 14 31 14v87c0 25-8 50-16 69-5 12-24 8-22-5l7-39c4-21 1-41-4-61l-7-31 11-34Z",
-  },
-  {
-    label: "Perna esquerda",
-    front: "M141 251c-9 9-20 14-31 14v87c0 25 8 50 16 69 5 12 24 8 22-5l-7-39c-4-21-1-41 4-61l7-31-11-34Z",
-    back: "M141 251c-9 9-20 14-31 14v87c0 25 8 50 16 69 5 12 24 8 22-5l-7-39c-4-21-1-41 4-61l7-31-11-34Z",
-  },
-  {
-    label: "Pé direito",
-    front: "M80 405c7 4 13 4 19 0l-2 15c-2 9-14 14-27 11-13-3-16-11-8-17l18-9Z",
-    back: "M80 405c7 4 13 4 19 0l-2 15c-2 9-14 14-27 11-13-3-16-11-8-17l18-9Z",
-  },
-  {
-    label: "Pé esquerdo",
-    front: "M140 405c-7 4-13 4-19 0l2 15c2 9 14 14 27 11 13-3 16-11 8-17l-18-9Z",
-    back: "M140 405c-7 4-13 4-19 0l2 15c2 9 14 14 27 11 13-3 16-11 8-17l-18-9Z",
-  },
-];
-
-const BACK_LABELS: Record<string, string> = {
-  Cabeça: "Cabeça (atrás)",
-  Pescoço: "Pescoço (atrás)",
-  Peito: "Costas (em cima)",
-  Barriga: "Costas (embaixo)",
-  "Braço direito": "Braço esquerdo",
-  "Braço esquerdo": "Braço direito",
-  "Mão direita": "Mão esquerda",
-  "Mão esquerda": "Mão direita",
-  "Perna direita": "Perna esquerda",
-  "Perna esquerda": "Perna direita",
-  "Pé direito": "Pé esquerdo",
-  "Pé esquerdo": "Pé direito",
-};
-
 function BodyFigure({
   state,
   dispatch,
@@ -131,19 +53,11 @@ function BodyFigure({
   speak: (text: string) => void;
 }) {
   const isFront = state.side === "front";
-  const isFemale = state.gender === "female";
 
   function chooseRegion(label: string) {
     const marked = state.answers.local.includes(label);
     dispatch({ type: "TOGGLE_LOCAL", label });
     speak(`${label}${marked ? " desmarcado." : " marcado."}`);
-  }
-
-  function handleRegionKey(event: ReactKeyboardEvent<SVGPathElement>, label: string) {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      chooseRegion(label);
-    }
   }
 
   return (
@@ -168,99 +82,33 @@ function BodyFigure({
         <span className="figure-caption">{isFront ? "Vista frontal" : "Vista posterior"}</span>
       </div>
 
-      <div className="figure-stage" style={{ perspective: "1000px" }}>
-        <svg
-          className={`body-figure ${isFemale ? "figure-female" : "figure-male"}`}
-          viewBox="0 0 220 450"
-          role="group"
-          aria-label={`Mapa corporal ${isFemale ? "feminino" : "masculino"}, vista ${isFront ? "de frente" : "de costas"}, rotação ${state.angle} graus`}
-          style={{ transform: `rotateY(${state.angle}deg) scale(${state.figureZoom})` }}
-        >
-          <defs>
-            <linearGradient id="skin" x1="0" x2="1" y1="0.2" y2="0.9">
-              <stop offset="0" stopColor={isFemale ? "#f5c5a5" : "#efb997"} />
-              <stop offset="0.48" stopColor={isFemale ? "#e8a982" : "#db9873"} />
-              <stop offset="1" stopColor={isFemale ? "#c77e60" : "#bd7457"} />
-            </linearGradient>
-            <linearGradient id="skin-light" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="#f8d2b7" />
-              <stop offset="1" stopColor="#d69373" />
-            </linearGradient>
-            <linearGradient id="pain" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="#ff8b79" />
-              <stop offset="1" stopColor="#ec5f5c" />
-            </linearGradient>
-            <filter id="soft-shadow" x="-30%" y="-15%" width="160%" height="145%">
-              <feDropShadow dx="0" dy="10" stdDeviation="9" floodColor="#163c35" floodOpacity=".2" />
-            </filter>
-          </defs>
-          <ellipse cx="110" cy="433" rx="66" ry="9" fill="#174c42" opacity=".12" aria-hidden="true" />
-          <g className="figure-regions" filter="url(#soft-shadow)">
-            {(isFront
-              ? BODY_REGIONS
-              : [
-                  ...BODY_REGIONS,
-                  {
-                    label: "Bumbum",
-                    front: "",
-                    back: "M78 240c10 8 21 13 32 13s22-5 32-13l-4 30c-7 9-17 14-28 14s-21-5-28-14l-4-30Z",
-                  },
-                ]
-            ).map((region, index) => {
-              const label = isFront ? region.label : BACK_LABELS[region.label] ?? region.label;
-              const selected = state.answers.local.includes(label);
-              const genderAdjustment =
-                isFemale && index === 2
-                  ? "M72 99c11-10 24-16 38-16s27 6 38 16l9 69-17 37H80l-17-37 9-69Z"
-                  : isFemale && index === 3
-                    ? "M78 190c10 6 21 11 32 11s22-5 32-11l3 57c-11 11-22 17-35 17s-24-6-35-17l3-57Z"
-                    : null;
-              return (
-                <path
-                  key={label}
-                  d={genderAdjustment ?? (isFront ? region.front : region.back)}
-                  className={`body-region${selected ? " body-region-selected" : ""}`}
-                  fill={
-                    state.mode === "hc"
-                      ? selected
-                        ? "#ffe600"
-                        : "#fff"
-                      : selected
-                        ? "url(#pain)"
-                        : index % 2 === 0
-                          ? "url(#skin-light)"
-                          : "url(#skin)"
-                  }
-                  stroke={state.mode === "hc" ? "#000" : selected ? "#c84d46" : "#a86e57"}
-                  strokeWidth={state.mode === "hc" ? "2.5" : "1.5"}
-                  vectorEffect="non-scaling-stroke"
-                  tabIndex={0}
-                  role="button"
-                  aria-pressed={selected}
-                  aria-label={label}
-                  onClick={() => chooseRegion(label)}
-                  onKeyDown={(event) => handleRegionKey(event, label)}
-                />
-              );
-            })}
-          </g>
-          {isFront ? (
-            <g className="face-details" aria-hidden="true">
-              <path d="M97 43q3-2 6 0M117 43q3-2 6 0" fill="none" stroke="#714b42" strokeWidth="2" strokeLinecap="round" />
-              <path d="M103 57q7 6 14 0" fill="none" stroke="#a95751" strokeWidth="2" strokeLinecap="round" />
-              <path d="M106 49q3 2 6 0" fill="none" stroke="#ba8065" strokeWidth="1.5" strokeLinecap="round" />
-              <path d="M84 33q4-17 26-18 22 1 27 19-9-9-20-10-18-1-33 9Z" fill={isFemale ? "#473a37" : "#4a3934"} opacity=".92" />
-            </g>
-          ) : (
-            <path
-              d="M84 34q4-19 26-19 22 0 27 21l-5 17q-7-12-22-13-15-1-23 13Z"
-              fill="#493a37"
-              opacity=".92"
-              aria-hidden="true"
-            />
-          )}
-        </svg>
+      <div className="figure-stage">
+        <Suspense fallback={<span className="model-status" role="status">Preparando o modelo 3D...</span>}>
+          <ThreeBodyCanvas state={state} dispatch={dispatch} speak={speak} />
+        </Suspense>
       </div>
+      <details className="body-region-picker">
+        <summary>Selecionar região pela lista</summary>
+        <div className="body-region-options" role="group" aria-label="Regiões do corpo">
+          {(isFront
+            ? BODY_REGIONS
+            : [
+                ...BODY_REGIONS.map((label) => BACK_LABELS[label] ?? label),
+                "Bumbum",
+              ]
+          ).map((label) => (
+            <button
+              key={label}
+              type="button"
+              className="body-region-option"
+              aria-pressed={state.answers.local.includes(label)}
+              onClick={() => chooseRegion(label)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </details>
 
       <div className="figure-controls">
         <div className="rotation-buttons" role="group" aria-label="Girar figura">
@@ -331,7 +179,7 @@ function BodyFigure({
         </div>
       </div>
       <p className="figure-note">
-        Ilustração local e interativa para indicar regiões. Não é um modelo anatômico 3D realista nem substitui avaliação profissional.
+        Modelo 3D interativo para indicar regiões. É uma referência visual e não substitui avaliação profissional.
       </p>
     </div>
   );

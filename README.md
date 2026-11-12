@@ -30,10 +30,10 @@ npm run preview
 - O service worker guarda o shell do app e os recursos carregados no cache local para uso offline após uma primeira abertura com conexão.
 - Respostas só ficam na memória durante a triagem atual; não são persistidas nem transmitidas.
 
-## Ilustração e atribuições
+## Modelo corporal e atribuições
 
-O mapa corporal masculino/feminino é uma ilustração SVG local, acessível por teclado, com controles de zoom e rotação por CSS 3D. Ele permite indicar regiões na frente e nas costas sem baixar modelos, bibliotecas de modelos ou imagens externas. **Limitação:** a figura é esquemática e não é um modelo anatômico 3D realista nem uma ferramenta clínica.
+O mapa corporal usa um modelo humano 3D local, com iluminação e controles para girar, aproximar e selecionar regiões por toque ou pela lista acessível. O arquivo OBJ é armazenado no app e incluído no cache offline. O modelo é uma referência visual para organizar sintomas, não é uma ferramenta clínica e não substitui avaliação profissional.
 
-Não foram adicionados modelos ou imagens de terceiros; portanto, não há atribuição externa de modelo. Os três ícones de instalação (`public/icon-192.png`, `public/icon-512.png` e `public/icon-maskable-512.png`) foram mantidos do projeto original; os arquivos herdados não informavam autoria ou licença.
+O modelo base `public/models/makehuman-base.obj` foi obtido do [projeto MakeHuman](https://github.com/makehumancommunity/makehuman), criado por Data Collection AB, Joel Palmius e Jonas Hauquier, e está identificado como CC0 em seu cabeçalho. A biblioteca [Three.js](https://threejs.org/) é usada para renderizá-lo no navegador. Os três ícones de instalação (`public/icon-192.png`, `public/icon-512.png` e `public/icon-maskable-512.png`) foram mantidos do projeto original; os arquivos herdados não informavam autoria ou licença.
 
 Fontes, scripts, ícones vetoriais da interface e ilustração do corpo são locais. Não há chamadas a CDNs ou serviços remotos no fluxo da aplicação.

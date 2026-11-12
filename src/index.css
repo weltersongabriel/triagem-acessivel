@@ -366,7 +366,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, [role="button"]:focu
 .figure-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px 3px; }
 .figure-toolbar .segmented-control button { min-height: 34px; padding: 5px 13px; font-size: .72em; }
 .figure-caption { color: var(--muted); font-size: .75em; font-weight: 720; }
-.figure-stage { display: grid; min-height: 322px; place-items: center; overflow: hidden; padding: 8px 10px 0; }
+.figure-stage { position: relative; display: grid; min-height: 322px; place-items: center; overflow: hidden; padding: 8px 10px 0; }
+.body-model-shell { position: relative; width: min(390px, 100%); height: 322px; }
+.body-model-canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+.body-model-canvas:active { cursor: grabbing; }
+.model-status, .model-error { position: absolute; inset: auto 12px 12px; margin: 0; padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--card) 90%, transparent); color: var(--muted); text-align: center; font-size: .75em; }
+.model-error { color: var(--alert); font-weight: 720; }
+.body-region-picker { margin: 0 15px 12px; color: var(--muted); font-size: .76em; }
+.body-region-picker summary { width: fit-content; padding: 6px 0; color: var(--ink); font-weight: 750; cursor: pointer; }
+.body-region-options { display: flex; flex-wrap: wrap; gap: 7px; padding: 7px 0; }
+.body-region-option { min-height: 34px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--ink); cursor: pointer; }
+.body-region-option[aria-pressed="true"] { border-color: var(--alert); background: color-mix(in srgb, var(--alert) 14%, var(--card)); color: var(--alert); }
+.body-region-option:focus-visible, .body-region-picker summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .body-figure { width: min(278px, 80%); height: 310px; overflow: visible; transform-style: preserve-3d; backface-visibility: visible; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .body-region { cursor: pointer; transition: fill .16s ease, filter .16s ease; }
 .body-region:hover { filter: brightness(1.07) saturate(1.08); }
@@ -505,6 +516,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [role="button"]:focu
   .figure-toolbar { padding-inline: 10px; }
   .figure-caption { font-size: .68em; }
   .figure-stage { min-height: 297px; }
+  .body-model-shell { height: 297px; }
   .body-figure { width: min(245px, 84%); height: 285px; }
   .figure-controls { padding: 10px 11px 13px; }
   .rotation-buttons { gap: 5px; }

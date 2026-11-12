@@ -1,5 +1,5 @@
 // Increment this name whenever the app shell or bundled app changes.
-const CACHE = "triagem-accessivel-v6";
+const CACHE = "triagem-accessivel-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -7,6 +7,7 @@ const APP_SHELL = [
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable-512.png",
+  "./models/makehuman-base.obj",
 ];
 
 self.addEventListener("install", (event) => {

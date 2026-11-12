@@ -1,12 +1,15 @@
 export const WHOLE_BODY = "Corpo todo ou não sei";
 
-export const PAIN_FACES = ["😀", "🙂", "🙂", "😐", "😐", "😕", "🙁", "😣", "😖", "😭", "😭"] as const;
+export const PAIN_FACES = ["🙂", "😐", "😕", "😣", "😭"] as const;
 
 export const WARNING_SIGNS = [
   { icon: "😮‍💨", label: "Falta de ar" },
   { icon: "🫀", label: "Dor no peito" },
   { icon: "😵", label: "Desmaio" },
-  { icon: "🩸", label: "Sangramento" },
+  { icon: "🤕", label: "Dor de cabeça" },
+  { icon: "🪨", label: "Cólica renal" },
+  { icon: "🦷", label: "Dor de dente" },
+  { icon: "🤒", label: "Febre Alta" },
 ] as const;
 
 export type Mode = "std" | "kid" | "hc";
@@ -131,7 +134,7 @@ export function triageReducer(state: TriageState, action: TriageAction): TriageS
       return goTo(
         { ...state, answers: { ...state.answers, intensidade: action.value } },
         5,
-        `Dor número ${action.value} de 10.`,
+        `Dor número ${action.value} de 5.`,
       );
     case "TOGGLE_LOCAL": {
       const withoutWholeBody = state.answers.local.filter((item) => item !== WHOLE_BODY);
@@ -237,7 +240,7 @@ export function summaryRows(answers: Answers): [string, string][] {
   if (answers.dor === "Sim") {
     rows.push(
       ["Onde dói", answers.local.join(", ") || "—"],
-      ["Intensidade", `${answers.intensidade ?? "—"} de 10`],
+      ["Intensidade", `${answers.intensidade ?? "—"} de 5`],
       ["Quando começou", answers.quando || "—"],
     );
   }

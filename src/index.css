@@ -390,7 +390,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [role="button"]:focu
 .selected-regions { min-height: 44px; margin: 13px 0; padding: 11px 14px; border: 1px dashed color-mix(in srgb, var(--accent) 42%, var(--line)); border-radius: 13px; background: var(--accent-soft); color: var(--accent-dark); font-size: .81em; font-weight: 730; }
 .body-step > .choice-list { padding: 0; }
 
-.pain-scale { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 9px; padding: 0 34px; }
+.pain-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 9px; padding: 0 34px; }
 .pain-option { display: grid; min-height: 76px; place-items: center; gap: 2px; padding: 9px 5px; border: 1px solid var(--line); border-bottom: 5px solid var(--line); border-radius: 14px; background: var(--card); color: var(--ink); box-shadow: 0 3px 0 var(--key-shadow); cursor: pointer; transition: transform .16s, background .16s; }
 .pain-option > span { font-size: 24px; line-height: 1.1; }
 .pain-option strong { font-size: .84em; }
@@ -439,7 +439,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [role="button"]:focu
 
 @media (min-width: 760px) {
   .choice-list:not(.choice-list-two) .choice-card { min-height: 68px; }
-  .pain-scale { grid-template-columns: repeat(11, minmax(0, 1fr)); }
+  .pain-scale { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
@@ -509,7 +509,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [role="button"]:focu
   .figure-controls { padding: 10px 11px 13px; }
   .rotation-buttons { gap: 5px; }
   .small-control { padding-inline: 9px; font-size: .68em; }
-  .pain-scale { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; padding: 0 19px; }
+  .pain-scale { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; padding: 0 19px; }
   .pain-option { min-height: 67px; }
   .pain-option > span { font-size: 22px; }
   .scale-legend { padding: 10px 19px 22px; font-size: .69em; }

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  PAIN_FACES,
   WHOLE_BODY,
+  WARNING_SIGNS,
   initialState,
   summaryRows,
   triageReducer,
@@ -9,6 +11,19 @@ import {
 import type { TriageState } from "./domain";
 
 describe("triage flow", () => {
+  it("uses a five-point pain scale and the updated warning signs", () => {
+    expect(PAIN_FACES).toHaveLength(5);
+    expect(WARNING_SIGNS.map(({ label }) => label)).toEqual([
+      "Falta de ar",
+      "Dor no peito",
+      "Desmaio",
+      "Dor de cabeça",
+      "Cólica renal",
+      "Dor de dente",
+      "Febre Alta",
+    ]);
+  });
+
   it("starts with the mode choice and opens the first question after a mode is chosen", () => {
     const initial = initialState();
     const selected = triageReducer(initial, { type: "SELECT_MODE", mode: "kid" });
@@ -68,7 +83,7 @@ describe("triage flow", () => {
     let state: TriageState = { ...initialState(), step: 3 };
     state = triageReducer(state, { type: "TOGGLE_LOCAL", label: "Cabeça" });
     state = triageReducer(state, { type: "CONTINUE_LOCAL" });
-    state = triageReducer(state, { type: "SET_INTENSITY", value: 7 });
+    state = triageReducer(state, { type: "SET_INTENSITY", value: 5 });
     state = triageReducer(state, {
       type: "ANSWER",
       key: "quando",
@@ -89,7 +104,7 @@ describe("triage flow", () => {
       ["Como está", "Não estou bem"],
       ["Sente dor", "Sim"],
       ["Onde dói", "Cabeça"],
-      ["Intensidade", "7 de 10"],
+      ["Intensidade", "5 de 5"],
       ["Quando começou", "Há alguns dias"],
       ["Sinais de alerta", "Falta de ar"],
     ]);

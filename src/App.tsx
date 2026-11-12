@@ -374,7 +374,7 @@ function questionForStep(step: Step): string {
     1: "Você está se sentindo bem?",
     2: "Você está sentindo dor?",
     3: "Onde está doendo? Toque no corpo.",
-    4: "Qual a força da dor? 0 é sem dor. 10 é a pior dor.",
+    4: "Qual a força da dor? 1 é pouca dor. 5 é muita dor.",
     5: "Quando a dor começou?",
     6: "Você sente algum destes sinais?",
     7: "Confira suas respostas.",
@@ -398,7 +398,7 @@ function completedAnswer(state: TriageState, step: Step): string {
     case 3:
       return state.answers.local.join(", ") || "—";
     case 4:
-      return state.answers.intensidade === undefined ? "—" : `${state.answers.intensidade} de 10`;
+      return state.answers.intensidade === undefined ? "—" : `${state.answers.intensidade} de 5`;
     case 5:
       return state.answers.quando || "—";
     case 6:
@@ -586,23 +586,26 @@ function App() {
       case 4:
         return (
           <>
-            <div className="pain-scale" role="group" aria-label="Escala de dor de zero a dez">
-              {PAIN_FACES.map((face, level) => (
-                <button
-                  className="pain-option"
-                  key={level}
-                  type="button"
-                  aria-label={`${level} de 10${level === 0 ? ", sem dor" : level === 10 ? ", pior dor" : ""}`}
-                  aria-pressed={state.answers.intensidade === level}
-                  style={{ borderBottomColor: `hsl(${120 - level * 12} 65% 48%)` }}
-                  onClick={() => dispatch({ type: "SET_INTENSITY", value: level })}
-                >
-                  <span aria-hidden="true">{face}</span>
-                  <strong>{level}</strong>
-                </button>
-              ))}
+            <div className="pain-scale" role="group" aria-label="Escala de dor de um a cinco">
+              {PAIN_FACES.map((face, index) => {
+                const level = index + 1;
+                return (
+                  <button
+                    className="pain-option"
+                    key={level}
+                    type="button"
+                    aria-label={`${level} de 5${level === 1 ? ", pouca dor" : level === 5 ? ", muita dor" : ""}`}
+                    aria-pressed={state.answers.intensidade === level}
+                    style={{ borderBottomColor: `hsl(${120 - index * 30} 65% 48%)` }}
+                    onClick={() => dispatch({ type: "SET_INTENSITY", value: level })}
+                  >
+                    <span aria-hidden="true">{face}</span>
+                    <strong>{level}</strong>
+                  </button>
+                );
+              })}
             </div>
-            <div className="scale-legend"><span>0 = sem dor</span><span>10 = pior dor</span></div>
+            <div className="scale-legend"><span>1 = pouca dor</span><span>5 = muita dor</span></div>
           </>
         );
       case 5:
@@ -618,6 +621,16 @@ function App() {
               icon="🗓️"
               label="Há semanas ou mais"
               onClick={() => answer("quando", "Há semanas ou mais", 6, "Há semanas ou mais")}
+            />
+            <Choice
+              icon="⌛"
+              label="Há muito tempo"
+              onClick={() => answer("quando", "Há muito tempo", 6, "Há muito tempo")}
+            />
+            <Choice
+              icon="🤷"
+              label="Não sei"
+              onClick={() => answer("quando", "Não sei", 6, "Não sei")}
             />
           </div>
         );

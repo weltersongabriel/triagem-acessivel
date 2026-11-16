@@ -22,14 +22,14 @@ export const BACK_LABELS: Record<(typeof BODY_REGIONS)[number], string> = {
   Pescoço: "Pescoço (atrás)",
   Peito: "Costas (em cima)",
   Barriga: "Costas (embaixo)",
-  "Braço direito": "Braço esquerdo (atrás)",
-  "Braço esquerdo": "Braço direito (atrás)",
-  "Mão direita": "Mão esquerda (atrás)",
-  "Mão esquerda": "Mão direita (atrás)",
-  "Perna direita": "Perna esquerda (atrás)",
-  "Perna esquerda": "Perna direita (atrás)",
-  "Pé direito": "Pé esquerdo (atrás)",
-  "Pé esquerdo": "Pé direito (atrás)",
+  "Braço direito": "Braço direito (atrás)",
+  "Braço esquerdo": "Braço esquerdo (atrás)",
+  "Mão direita": "Mão direita (atrás)",
+  "Mão esquerda": "Mão esquerda (atrás)",
+  "Perna direita": "Perna direita (atrás)",
+  "Perna esquerda": "Perna esquerda (atrás)",
+  "Pé direito": "Pé direito (atrás)",
+  "Pé esquerdo": "Pé esquerdo (atrás)",
 };
 
 const FRONT_LABELS = new Map(
@@ -76,7 +76,7 @@ export function markerForRegion(label: string): {
 } {
   const frontLabel = FRONT_LABELS.get(label) ?? label;
   const back = FRONT_LABELS.has(label) || label === "Bumbum";
-  const rightSide = frontLabel.endsWith("direito");
+  const rightSide = frontLabel.includes("direit");
   const x = rightSide ? -1 : 1;
   let y: number;
   let zMagnitude: number;

@@ -32,7 +32,7 @@ npm run preview
 
 ## Modelo corporal e atribuições
 
-O mapa corporal usa um modelo humano 3D local, com iluminação e controles para girar, aproximar e selecionar regiões por toque ou pela lista acessível. O arquivo OBJ é armazenado no app e incluído no cache offline. O modelo é uma referência visual para organizar sintomas, não é uma ferramenta clínica e não substitui avaliação profissional.
+O mapa corporal usa um modelo humano 3D local, com iluminação e controles para girar, aproximar e selecionar regiões por toque ou pela lista acessível. Os lados direito e esquerdo mantêm a referência anatômica nas vistas frontal e posterior, e a voz confirma as seleções. O arquivo OBJ é armazenado no app e incluído no cache offline. O modelo é uma referência visual para organizar sintomas, não é uma ferramenta clínica e não substitui avaliação profissional.
 
 O modelo base `public/models/makehuman-base.obj` foi obtido do [projeto MakeHuman](https://github.com/makehumancommunity/makehuman), criado por Data Collection AB, Joel Palmius e Jonas Hauquier, e está identificado como CC0 em seu cabeçalho. A biblioteca [Three.js](https://threejs.org/) é usada para renderizá-lo no navegador. Os três ícones de instalação (`public/icon-192.png`, `public/icon-512.png` e `public/icon-maskable-512.png`) foram mantidos do projeto original; os arquivos herdados não informavam autoria ou licença.
 

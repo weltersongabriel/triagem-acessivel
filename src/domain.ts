@@ -26,6 +26,7 @@ export interface Answers {
   intensidade: number | undefined;
   quando: string;
   alertas: string[];
+  nome: string;
 }
 
 export interface TriageState {
@@ -64,6 +65,8 @@ export type TriageAction =
   | { type: "NEW_TRIAGE" }
   | { type: "CORRECT" }
   | { type: "SHOW_FINAL" }
+  | { type: "SET_NAME"; value: string }
+  | { type: "SEND_RESULTS"; method: "email" | "sms" | "copy" }
   | { type: "OPEN_HELP" }
   | { type: "CLOSE_HELP" };
 
@@ -75,6 +78,7 @@ export function emptyAnswers(): Answers {
     intensidade: undefined,
     quando: "",
     alertas: [],
+    nome: "",
   };
 }
 
@@ -224,6 +228,13 @@ export function triageReducer(state: TriageState, action: TriageAction): TriageS
       };
     case "SHOW_FINAL":
       return goTo(state, 8, "Enviado.");
+    case "SET_NAME":
+      return {
+        ...state,
+        answers: { ...state.answers, nome: action.value },
+      };
+    case "SEND_RESULTS":
+      return state;
     case "OPEN_HELP":
       return { ...state, helpOpen: true };
     case "CLOSE_HELP":
@@ -249,6 +260,11 @@ export function summaryRows(answers: Answers): [string, string][] {
     "Sinais de alerta",
     answers.alertas.length ? answers.alertas.join(", ") : "Nenhum informado",
   ]);
+
+  if (answers.nome) {
+    rows.push(["Nome", answers.nome]);
+  }
+
   return rows;
 }
 
@@ -260,4 +276,10 @@ export function summarySpokenText(answers: Answers): string {
 
 export function warningSpokenText(alerts: string[]): string {
   return alerts.length ? `Sinais marcados: ${alerts.join(", ")}.` : "Nenhum sinal de alerta.";
+}
+
+export function generateResultsText(answers: Answers): string {
+  const rows = summaryRows(answers);
+  const lines = rows.map(([label, value]) => `${label}: ${value}`);
+  return `=== TRIAGEM ACESSÍVEL ===\n${lines.join("\n")}\n==========================`;
 }

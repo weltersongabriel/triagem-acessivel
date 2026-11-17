@@ -8,6 +8,7 @@ import {
   summaryRows,
   summarySpokenText,
   triageReducer,
+  generateResultsText,
 } from "./domain";
 import type { Step, TriageAction, TriageState } from "./domain";
 import { BACK_LABELS, BODY_REGIONS } from "./bodyRegions";
@@ -327,6 +328,38 @@ function App() {
     speak(`${prefix}${questionForStep(state.step)}${summary}`);
   }
 
+  // Contatos do enfermeiro/equipe de saúde
+  const NURSE_EMAIL = "weltersongabriel.ti@gmail.com";
+  const NURSE_PHONE = "38998661848";
+
+  function handleSendResults(method: "email" | "sms" | "copy", answers: TriageState["answers"]) {
+    const text = generateResultsText(answers);
+    const subject = "Triagem Acessível - Resumo do Paciente";
+    const body = encodeURIComponent(text);
+
+    if (method === "email") {
+      // Abre o cliente de e-mail padrão com destinatário pré-preenchido
+      window.location.href = `mailto:${NURSE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
+    } else if (method === "sms") {
+      // Abre o app de SMS padrão com número pré-preenchido (funciona em dispositivos móveis)
+      window.location.href = `sms:${NURSE_PHONE}?body=${body}`;
+    } else if (method === "copy") {
+      // Copia para a área de transferência
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Resumo copiado para a área de transferência!");
+      }).catch(() => {
+        // Fallback para navegadores antigos
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        alert("Resumo copiado para a área de transferência!");
+      });
+    }
+  }
+
   function modeChoice(mode: TriageState["mode"]) {
     dispatch({ type: "SELECT_MODE", mode });
   }
@@ -514,6 +547,21 @@ function App() {
         return (
           <>
             <AnswerSummary state={state} />
+            <div className="name-input-section" aria-labelledby="name-input-label">
+              <label id="name-input-label" className="name-input-label">
+                <span>Seu nome (opcional)</span>
+                <input
+                  type="text"
+                  className="name-input"
+                  placeholder="Digite seu nome se quiser identificar"
+                  value={state.answers.nome}
+                  onChange={(e) => dispatch({ type: "SET_NAME", value: e.target.value })}
+                  autoComplete="name"
+                  maxLength={50}
+                />
+              </label>
+              <p className="name-input-hint">O nome é opcional. Suas respostas já estão prontas sem ele.</p>
+            </div>
             <div className="choice-list summary-actions">
               <button className="primary-button" type="button" onClick={() => dispatch({ type: "SHOW_FINAL" })}>
                 Está certo — mostrar ao profissional <span aria-hidden="true">→</span>
@@ -529,6 +577,36 @@ function App() {
             <div className="done-message" role="status">
               <span aria-hidden="true">💚</span>
               <p>Suas respostas estão prontas para serem mostradas ao profissional de saúde.</p>
+            </div>
+            <div className="send-options" aria-labelledby="send-options-label">
+              <h3 id="send-options-label" className="send-options-title">Enviar resumo para a equipe de saúde</h3>
+              <p className="send-options-hint">Escolha como deseja compartilhar (opcional):</p>
+              <div className="send-buttons">
+                <button
+                  type="button"
+                  className="send-button send-button-email"
+                  onClick={() => handleSendResults("email", state.answers)}
+                >
+                  <span aria-hidden="true">📧</span>
+                  <span>Enviar por e-mail</span>
+                </button>
+                <button
+                  type="button"
+                  className="send-button send-button-sms"
+                  onClick={() => handleSendResults("sms", state.answers)}
+                >
+                  <span aria-hidden="true">💬</span>
+                  <span>Enviar por SMS</span>
+                </button>
+                <button
+                  type="button"
+                  className="send-button send-button-copy"
+                  onClick={() => handleSendResults("copy", state.answers)}
+                >
+                  <span aria-hidden="true">📋</span>
+                  <span>Copiar texto</span>
+                </button>
+              </div>
             </div>
             <div className="choice-list">
               <Choice icon="🔄" label="Nova triagem" onClick={() => dispatch({ type: "NEW_TRIAGE" })} />
